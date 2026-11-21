@@ -70,3 +70,16 @@ class Registro(Base):
               postgresql_where=text("hora_salida IS NULL"),
               sqlite_where=text("hora_salida IS NULL")),
     )
+    
+    class Pago(Base):
+        """Registro de la transacción de pago de una mensualidad."""
+        __tablename__ = "pagos"
+        id = Column(Integer, primary_key=True, index=True)
+        mensualidad_id = Column(Integer, ForeignKey("mensualidades.id"), nullable=False, index=True)
+        monto = Column(Numeric(12, 0), nullable=False)
+        metodo_pago = Column(String(20), nullable=False)  # Efectivo, Transferencia, Tarjeta
+        fecha_pago = Column(DateTime(timezone=True), server_default=func.now())
+        referencia = Column(String(50), nullable=True)  # Número de comprobante
+        
+        mensualidad = relationship("Mensualidad")
+    

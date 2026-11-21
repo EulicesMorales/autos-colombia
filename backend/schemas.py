@@ -98,3 +98,17 @@ class CeldaRespuesta(BaseModel):
     tipo: str
     estado: str
     placa: Optional[str] = None
+
+# ── Pagos ────────────────────────────────────────────────
+class PagoCrear(BaseModel):
+    mensualidad_id: int
+    metodo_pago: str
+
+class PagoRespuesta(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    mensualidad_id: int
+    monto: int
+    metodo_pago: str
+    fecha_pago: datetime
+    referencia: Optional[str] = None
