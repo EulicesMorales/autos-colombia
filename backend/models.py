@@ -78,6 +78,7 @@ class Registro(Base):
         mensualidad_id = Column(Integer, ForeignKey("mensualidades.id"), nullable=False, index=True)
         monto = Column(Numeric(12, 0), nullable=False)
         metodo_pago = Column(String(20), nullable=False)  # Efectivo, Transferencia, Tarjeta
+        banco = Column(String(50), nullable=True)   
         fecha_pago = Column(DateTime(timezone=True), server_default=func.now())
         referencia = Column(String(50), nullable=True)  # Número de comprobante
         

@@ -4,7 +4,7 @@ from errores import ErrorNegocio
 from models import Pago, Mensualidad
 from datetime import datetime
 
-def registrar_pago(db: Session, mensualidad_id: int, metodo_pago: str):
+def registrar_pago(db: Session, mensualidad_id: int, metodo_pago: str, banco: str = "Bancolombia"):
     # 1. Verificar que la mensualidad exista
     mensualidad = db.query(Mensualidad).filter(Mensualidad.id == mensualidad_id).first()
     if not mensualidad:
@@ -19,6 +19,7 @@ def registrar_pago(db: Session, mensualidad_id: int, metodo_pago: str):
         mensualidad_id=mensualidad.id,
         monto=mensualidad.valor_mensual,
         metodo_pago=metodo_pago,
+        banco=banco,
         referencia=f"REC-{datetime.now().strftime('%Y%m%d%H%M%S')}"
     )
     db.add(nuevo_pago)

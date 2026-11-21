@@ -17,7 +17,7 @@ ORIGENES_PERMITIDOS = [
 ]
 
 # ── Reglas de negocio: servicio por MENSUALIDAD ─────────
-TARIFAS_MENSUALES = {"Carro": 180000, "Moto": 90000}  # valores de ejemplo (COP)
+TARIFAS_MENSUALES = {"Carro": 250000, "Moto": 100000}  # valores de ejemplo (COP)
 DURACION_MENSUALIDAD_DIAS = 30
 
 TIPOS_VEHICULO = ("Carro", "Moto")

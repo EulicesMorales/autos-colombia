@@ -103,6 +103,7 @@ class CeldaRespuesta(BaseModel):
 class PagoCrear(BaseModel):
     mensualidad_id: int
     metodo_pago: str
+    banco: Optional[str] = "Bancolombia"
 
 class PagoRespuesta(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -110,5 +111,6 @@ class PagoRespuesta(BaseModel):
     mensualidad_id: int
     monto: int
     metodo_pago: str
+    banco: Optional[str] = None
     fecha_pago: datetime
     referencia: Optional[str] = None
