@@ -83,3 +83,11 @@ class Pago(Base):
     referencia = Column(String(50), nullable=True)  # Número de comprobante
     
     mensualidad = relationship("Mensualidad")
+    
+class UsuarioSistema(Base):
+    """Cuentas de acceso para Administradores y Operadores."""
+    __tablename__ = "usuarios_sistema"
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String(50), unique=True, index=True, nullable=False)
+    password = Column(String(100), nullable=False) # En un sistema real sería un hash, aquí lo dejamos simple
+    rol = Column(String(20), nullable=False) # "Administrador" o "Operador"

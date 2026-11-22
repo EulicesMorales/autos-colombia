@@ -1,18 +1,24 @@
-from database import engine, Base
-from models import Pago  # Importante: importar el modelo para que SQLAlchemy lo "vea"
-from sqlalchemy import text
+from database import engine, Base, SessionLocal
+from models import UsuarioSistema
 
-print("Conectando a la base de datos...")
+# 1. Crear la tabla en la base de datos
+print("Creando tabla de usuarios del sistema...")
+Base.metadata.create_all(bind=engine)
+
+# 2. Insertar el Administrador y el Operador por defecto
+db = SessionLocal()
 try:
-    # 1. Crear la tabla 'pagos' si no existe
-    Base.metadata.create_all(bind=engine)
-    print("✅ Tabla 'pagos' creada o ya existente.")
-
-    # 2. Ahora que la tabla existe, agregar la columna 'banco'
-    with engine.connect() as conn:
-        conn.execute(text("ALTER TABLE pagos ADD COLUMN IF NOT EXISTS banco VARCHAR(50);"))
-        conn.commit()
-        print("✅ ¡Columna 'banco' agregada exitosamente a la tabla 'pagos'!")
-        
+    # Revisar si ya existe el admin
+    if not db.query(UsuarioSistema).filter(UsuarioSistema.username == "admin").first():
+        admin = UsuarioSistema(username="admin", password="admin123", rol="Administrador")
+        operador = UsuarioSistema(username="operador", password="operador123", rol="Operador")
+        db.add(admin)
+        db.add(operador)
+        db.commit()
+        print("✅ Usuarios 'admin' y 'operador' creados.")
+    else:
+        print("✅ Los usuarios ya existían.")
 except Exception as e:
-    print(f"❌ Error al actualizar la base de datos: {e}")
+    print(f"❌ Error: {e}")
+finally:
+    db.close()

@@ -1,0 +1,351 @@
+<!-- ── NAVBAR MODERNA ── -->
+<div class="navbar">
+  <div class="nav-left">
+    <div class="logo">
+      <span class="logo-icon">🚘</span> AutosParking
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="role-badge">
+      <span class="dot"></span> {{ rolUsuario }}
+    </div>
+    <button class="btn-logout" (click)="cerrarSesion()">
+      Cerrar Sesión
+    </button>
+  </div>
+</div>
+
+<!-- ── HEADER / HERO ── -->
+<div class="dashboard-header">
+  <div class="hero-text">
+    <h1>Panel de Control</h1>
+    <p>Gestiona usuarios, celdas y pagos del parqueadero en tiempo real.</p>
+  </div>
+  <div class="hero-image">
+    <img src="/f1.jpg" alt="F1">
+  </div>
+</div>
+
+<!-- ── TARJETAS KPI (Estadísticas) ── -->
+<div class="kpi-container">
+  <div class="kpi-card">
+    <div class="kpi-icon">🚗</div>
+    <div class="kpi-info">
+      <span class="kpi-title">Vehículos Activos</span>
+      <span class="kpi-value">{{ vehiculos.length }}</span>
+    </div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-icon">🟢</div>
+    <div class="kpi-info">
+      <span class="kpi-title">Estado del Servidor</span>
+      <span class="kpi-value text-green" *ngIf="servidorActivo">Activo</span>
+      <span class="kpi-value text-red" *ngIf="!servidorActivo">Desconectado</span>
+    </div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-icon">🅿️</div>
+    <div class="kpi-info">
+      <span class="kpi-title">Celdas Disponibles</span>
+      <span class="kpi-value">{{ resumen.Disponible }} / {{ resumen.total }}</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── PESTAÑAS (Tabs) ── -->
+<div class="tabs-container">
+  <div class="tabs">
+    <button class="tab" [class.active]="pestana === 'operacion'" (click)="cambiarPestana('operacion')">
+      <span class="tab-icon">⚡</span> Operación
+    </button>
+    <button class="tab" [class.active]="pestana === 'historial'" (click)="cambiarPestana('historial')">
+      <span class="tab-icon">🕘</span> Historial
+    </button>
+    <button class="tab" [class.active]="pestana === 'usuarios'" (click)="cambiarPestana('usuarios')">
+      <span class="tab-icon">👤</span> Usuarios
+    </button>
+    <button class="tab" [class.active]="pestana === 'pagos'" (click)="cambiarPestana('pagos')">
+      <span class="tab-icon">💳</span> Pagos
+    </button>
+    
+    @if (rolUsuario === 'Administrador') {
+      <button class="tab" [class.active]="pestana === 'celdas'" (click)="cambiarPestana('celdas')">
+        <span class="tab-icon">🅿️</span> Celdas
+      </button>
+    }
+  </div>
+</div>
+
+<!-- ═══════════════ CONTENIDO: OPERACIÓN ═══════════════ -->
+@if (pestana === 'operacion') {
+  <div class="section-grid">
+    <div class="card glass-card">
+      <div class="card-header">
+        <span class="badge badge-in">ENTRADA</span>
+        <h2>Registrar Ingreso</h2>
+        <p>Solo vehículos con mensualidad vigente.</p>
+      </div>
+      <div class="form-group">
+        <label>Placa del Vehículo</label>
+        <input type="text" [(ngModel)]="placa" class="form-control" placeholder="Ej: ABC123" style="text-transform: uppercase;" (keyup.enter)="registrarEntrada()">
+      </div>
+      <div class="form-group">
+        <label>Tipo de Vehículo</label>
+        <select [(ngModel)]="tipo" class="form-control">
+          <option value="Carro">🚗 Automóvil</option>
+          <option value="Moto">🏍️ Motocicleta</option>
+        </select>
+      </div>
+      <button (click)="registrarEntrada()" class="btn-submit btn-dark">Ingresar Vehículo →</button>
+    </div>
+
+    <div class="card glass-card">
+      <div class="card-header">
+        <span class="badge badge-out">SALIDA</span>
+        <h2>Registrar Salida</h2>
+        <p>El servicio está cubierto por la mensualidad.</p>
+      </div>
+      <div class="form-group">
+        <label>Placa del Vehículo</label>
+        <input type="text" [(ngModel)]="placaSalida" class="form-control" placeholder="Ej: ABC123" style="text-transform: uppercase;" (keyup.enter)="registrarSalida()">
+      </div>
+      <div class="spacer"></div>
+      <button (click)="registrarSalida()" class="btn-submit btn-outline">Registrar Salida</button>
+    </div>
+  </div>
+
+  <div class="card table-card">
+    <div class="card-header">
+      <h2>🚗 Vehículos en el Parqueadero</h2>
+    </div>
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr><th>Celda</th><th>Placa</th><th>Tipo</th><th>Hora Entrada</th><th>Estado</th></tr>
+        </thead>
+        <tbody>
+          @for (v of vehiculos; track v.id) {
+            <tr>
+              <td><span class="tag">{{ v.celda_numero }}</span></td>
+              <td><b>{{ v.placa }}</b></td>
+              <td>{{ v.tipo_vehiculo }}</td>
+              <td>{{ v.hora_entrada | date:'hh:mm a' }}</td>
+              <td><span class="pill pill-ok">Parqueado</span></td>
+            </tr>
+          }
+          @if (vehiculos.length === 0) {
+            <tr><td colspan="5" class="empty">No hay vehículos en el parqueadero.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}
+
+<!-- ═══════════════ CONTENIDO: HISTORIAL (Agregado de nuevo) ═══════════════ -->
+@if (pestana === 'historial') {
+  <div class="card table-card">
+    <div class="card-header">
+      <h2>🕘 Historial de Estancias</h2>
+      <p>Consulta las entradas y salidas registradas en el sistema.</p>
+    </div>
+    
+    <div class="row" style="display:flex; gap:15px; align-items:flex-end; margin-bottom: 25px; flex-wrap: wrap;">
+      <div class="form-group" style="margin-bottom:0; flex:1; min-width: 200px;">
+        <label>Estado</label>
+        <select [(ngModel)]="filtroEstado" class="form-control">
+          <option value="finalizadas">Finalizadas</option>
+          <option value="activas">Activas</option>
+          <option value="todas">Todas</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:0; flex:1; min-width: 200px;">
+        <label>Placa (opcional)</label>
+        <input type="text" [(ngModel)]="filtroPlaca" class="form-control" placeholder="Ej: ABC123" style="text-transform: uppercase;" (keyup.enter)="consultarEstancias()">
+      </div>
+      <button class="btn-submit btn-dark" style="width: auto; padding: 14px 24px;" (click)="consultarEstancias()">Consultar</button>
+    </div>
+
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr><th>Placa</th><th>Tipo</th><th>Celda</th><th>Entrada</th><th>Salida</th><th>Estado</th></tr>
+        </thead>
+        <tbody>
+          @for (e of estancias; track e.id) {
+            <tr>
+              <td><b>{{ e.placa }}</b></td>
+              <td>{{ e.tipo_vehiculo }}</td>
+              <td><span class="tag">{{ e.celda_numero }}</span></td>
+              <td>{{ e.hora_entrada | date:'dd/MM/yyyy hh:mm a' }}</td>
+              <td>{{ e.hora_salida ? (e.hora_salida | date:'dd/MM/yyyy hh:mm a') : '—' }}</td>
+              <td>
+                @if (e.hora_salida) { <span class="pill pill-bad">Finalizada</span> }
+                @else { <span class="pill pill-ok">Activa</span> }
+              </td>
+            </tr>
+          }
+          @if (estancias.length === 0 && consultaHecha) {
+            <tr><td colspan="6" class="empty">No se encontraron resultados.</td></tr>
+          }
+          @if (!consultaHecha) {
+            <tr><td colspan="6" class="empty">Presiona "Consultar" para ver los resultados.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+}
+
+<!-- ═══════════════ CONTENIDO: PAGOS (Modificado con Selector) ═══════════════ -->
+@if (pestana === 'pagos') {
+  <div class="card glass-card" style="max-width: 800px; margin: 0 auto;">
+    <div class="card-header text-center">
+      <span class="badge badge-pay">PAGOS</span>
+      <h2>Registrar Pago de Mensualidad</h2>
+      <p>Selecciona la mensualidad del cliente para procesar el pago.</p>
+    </div>
+    
+    <div class="section-grid" style="margin-top: 20px; grid-template-columns: 1fr;">
+      
+      <!-- Menú desplegable para elegir al cliente por su mensualidad -->
+      <div class="form-group">
+        <label>Seleccionar Cliente / Mensualidad</label>
+        <select [(ngModel)]="nuevoPago.mensualidad_id" class="form-control">
+          <option [ngValue]="null">Seleccione al cliente...</option>
+          @for (m of mensualidades; track m.id) {
+            @if (m.estado === 'Vigente') {
+              <option [ngValue]="m.id">{{ m.nombre_usuario }} - Placa: {{ m.placa }} (Valor: ${{m.valor_mensual}})</option>
+            }
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Método de Pago</label>
+        <select [(ngModel)]="nuevoPago.metodo_pago" class="form-control">
+          <option value="Transferencia">Transferencia Bancaria</option>
+          <option value="Efectivo">Efectivo</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label>Banco</label>
+        <input type="text" [(ngModel)]="nuevoPago.banco" class="form-control" value="Bancolombia" readonly style="background: #f1f5f9; cursor: not-allowed;">
+      </div>
+    </div>
+    
+    <button (click)="registrarPago()" class="btn-submit btn-dark" style="margin-top: 10px;">Procesar Pago 💳</button>
+  </div>
+}
+
+<!-- ═══════════════ CONTENIDO: CELDAS (ADMIN) ═══════════════ -->
+@if (pestana === 'celdas' && rolUsuario === 'Administrador') {
+  <div class="card glass-card" style="margin-bottom: 30px;">
+    <div class="card-header">
+      <h2>➕ Crear Nueva Celda</h2>
+    </div>
+    <div class="row" style="display:flex; gap:15px; align-items:flex-end;">
+      <div class="form-group" style="flex:1; margin-bottom:0;">
+        <label>Número</label>
+        <input type="text" [(ngModel)]="nuevaCelda.numero" class="form-control" placeholder="Ej: B-1" style="text-transform: uppercase;">
+      </div>
+      <div class="form-group" style="flex:1; margin-bottom:0;">
+        <label>Tipo</label>
+        <select [(ngModel)]="nuevaCelda.tipo" class="form-control">
+          <option value="Carro">🚗 Carro</option>
+          <option value="Moto">🏍️ Moto</option>
+        </select>
+      </div>
+      <button class="btn-submit btn-dark" style="width: auto; padding: 14px 24px;" (click)="crearCelda()">Crear</button>
+    </div>
+  </div>
+
+  <div class="card table-card">
+    <div class="card-header">
+      <h2>🅿️ Mapa de Celdas</h2>
+      <p>
+        <span class="pill pill-ok">Disponibles: {{ resumen.Disponible }}</span>
+        <span class="pill pill-bad" style="margin-left:10px;">Ocupadas: {{ resumen.Ocupada }}</span>
+        <span class="pill pill-warn" style="margin-left:10px;">Mantenimiento: {{ resumen.Mantenimiento }}</span>
+      </p>
+    </div>
+    <div class="celdas-grid">
+      @for (c of celdas; track c.id) {
+        <div class="celda-box" [class.is-ocupada]="c.estado === 'Ocupada'" [class.is-mantenimiento]="c.estado === 'Mantenimiento'">
+          <div class="celda-num">{{ c.numero }}</div>
+          <div class="celda-tipo">{{ c.tipo === 'Moto' ? '🏍️' : '🚗' }}</div>
+          
+          @if (c.estado === 'Ocupada') {
+            <div class="celda-placa">{{ c.placa }}</div>
+          } @else {
+            <button class="btn-mini" (click)="alternarMantenimiento(c)">
+              {{ c.estado === 'Mantenimiento' ? 'Habilitar' : 'Mantenimiento' }}
+            </button>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}
+
+<!-- ═══════════════ CONTENIDO: USUARIOS ═══════════════ -->
+@if (pestana === 'usuarios') {
+  <div class="section-grid">
+    <div class="card glass-card">
+      <div class="card-header">
+        <h2>Registrar Usuario</h2>
+      </div>
+      <div class="row" style="display:flex; gap:10px;">
+        <div class="form-group" style="flex:1;">
+          <label>Tipo Doc.</label>
+          <select [(ngModel)]="nuevoUsuario.tipo_documento" class="form-control">
+            <option>CC</option><option>CE</option><option>PAS</option>
+          </select>
+        </div>
+        <div class="form-group" style="flex:2;">
+          <label>Documento</label>
+          <input type="text" [(ngModel)]="nuevoUsuario.documento" class="form-control">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Nombre Completo</label>
+        <input type="text" [(ngModel)]="nuevoUsuario.nombre" class="form-control">
+      </div>
+      <button (click)="crearUsuario()" class="btn-submit btn-dark">Guardar Usuario</button>
+    </div>
+
+    <div class="card glass-card">
+      <div class="card-header">
+        <h2>Asociar Mensualidad</h2>
+      </div>
+      <div class="form-group">
+        <label>Usuario</label>
+        <select [(ngModel)]="nuevaMensualidad.usuario_id" class="form-control">
+          <option [ngValue]="null">Selecciona...</option>
+          @for (u of usuarios; track u.id) { <option [ngValue]="u.id">{{ u.nombre }}</option> }
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Placa del Vehículo</label>
+        <select [(ngModel)]="nuevaMensualidad.placa" class="form-control">
+          <option value="">Selecciona...</option>
+          @for (v of vehiculosDe(nuevaMensualidad.usuario_id); track v.id) { <option [value]="v.placa">{{ v.placa }}</option> }
+        </select>
+      </div>
+      <button (click)="crearMensualidad()" class="btn-submit btn-outline">Crear Mensualidad</button>
+    </div>
+  </div>
+}
+
+<!-- MODAL DE ALERTAS -->
+@if (mostrarModal) {
+  <div class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-icon">{{ esError ? '❌' : '✅' }}</div>
+      <h3>{{ esError ? 'Operación Rechazada' : '¡Operación Exitosa!' }}</h3>
+      <p>{{ mensajeModal }}</p>
+      <button (click)="cerrarModal()" class="btn-submit" [ngClass]="esError ? 'btn-red' : 'btn-dark'">Entendido</button>
+    </div>
+  </div>
+}

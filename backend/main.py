@@ -9,7 +9,7 @@ import models
 from database import engine, SessionLocal
 from errores import ErrorNegocio
 from migraciones import migrar, sincronizar_celdas, asegurar_celdas
-from routers import estancias, usuarios, mensualidades, celdas, pagos
+from routers import estancias, usuarios, mensualidades, celdas, pagos, auth
 
 
 @asynccontextmanager
@@ -57,3 +57,4 @@ app.include_router(usuarios.router)
 app.include_router(mensualidades.router)
 app.include_router(celdas.router)
 app.include_router(pagos.router)
+app.include_router(auth.router)

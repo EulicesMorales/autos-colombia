@@ -114,3 +114,17 @@ class PagoRespuesta(BaseModel):
     banco: Optional[str] = None
     fecha_pago: datetime
     referencia: Optional[str] = None
+    
+# ── Autenticación (Login) ────────────────────────────────
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
+class LoginResponse(BaseModel):
+    mensaje: str
+    rol: str
+
+class UsuarioSistemaCrear(BaseModel):
+    username: str
+    password: str
+    rol: str

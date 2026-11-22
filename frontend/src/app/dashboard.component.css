@@ -1,0 +1,267 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:host {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  background-color: #f8fafc;
+  color: #0f172a;
+  min-height: 100vh;
+}
+
+/* ── NAVBAR ── */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-icon { font-size: 26px; }
+.nav-right { display: flex; align-items: center; gap: 20px; }
+.role-badge {
+  background: #f1f5f9;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #e2e8f0;
+}
+.dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e; }
+.btn-logout {
+  background: transparent;
+  color: #ef4444;
+  border: 1px solid #ef4444;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-logout:hover { background: #ef4444; color: #fff; }
+
+/* ── HEADER / HERO ── */
+.dashboard-header {
+  max-width: 1200px;
+  margin: 40px auto 20px auto;
+  padding: 0 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.hero-text h1 { font-size: 42px; font-weight: 800; letter-spacing: -1.5px; margin: 0 0 10px 0; }
+.hero-text p { font-size: 16px; color: #64748b; margin: 0; }
+.hero-image img {
+  width: 180px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* ── KPI CARDS ── */
+.kpi-container {
+  max-width: 1200px;
+  margin: 0 auto 30px auto;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.kpi-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+.kpi-icon {
+  font-size: 28px;
+  background: #f8fafc;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+}
+.kpi-info { display: flex; flex-direction: column; }
+.kpi-title { font-size: 13px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;}
+.kpi-value { font-size: 28px; font-weight: 800; color: #0f172a; }
+.text-green { color: #16a34a; }
+.text-red { color: #dc2626; }
+
+/* ── TABS ── */
+.tabs-container {
+  max-width: 1200px;
+  margin: 0 auto 30px auto;
+  padding: 0 40px;
+}
+.tabs {
+  background: #ffffff;
+  display: inline-flex;
+  padding: 6px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.tab {
+  background: transparent;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 15px;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tab:hover { background: #f8fafc; color: #0f172a; }
+.tab.active { background: #0f172a; color: #ffffff; box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2); }
+
+/* ── CONTENIDO Y TARJETAS ── */
+.section-grid {
+  max-width: 1200px;
+  margin: 0 auto 30px auto;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.03);
+}
+.card-header { margin-bottom: 24px; }
+.card-header h2 { font-size: 24px; font-weight: 800; margin: 0 0 8px 0; letter-spacing: -0.5px;}
+.card-header p { color: #64748b; margin: 0; font-size: 14px; }
+.text-center { text-align: center; }
+
+.badge { display: inline-block; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; margin-bottom: 12px; }
+.badge-in { background: #dcfce7; color: #15803d; }
+.badge-out { background: #fee2e2; color: #b91c1c; }
+.badge-pay { background: #e0e7ff; color: #4338ca; }
+
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 8px; }
+.form-control {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s;
+  box-sizing: border-box;
+  background: #f8fafc;
+}
+.form-control:focus { outline: none; border-color: #0f172a; background: #ffffff; box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.05); }
+
+.btn-submit { width: 100%; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif; border: none; }
+.btn-dark { background: #0f172a; color: #ffffff; }
+.btn-dark:hover { background: #1e293b; transform: translateY(-2px); }
+.btn-outline { background: #ffffff; color: #0f172a; border: 2px solid #0f172a; }
+.btn-outline:hover { background: #f8fafc; transform: translateY(-2px); }
+.btn-red { background: #dc2626; color: #ffffff; }
+.spacer { height: 44px; }
+
+/* ── TABLAS ── */
+.table-card { max-width: 1200px; margin: 0 auto 40px auto; padding: 30px; }
+.table-responsive { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; padding: 16px; font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; border-bottom: 2px solid #e2e8f0; }
+td { padding: 16px; border-bottom: 1px solid #f1f5f9; font-size: 15px; }
+.tag { background: #f1f5f9; padding: 6px 10px; border-radius: 8px; font-weight: 700; font-size: 13px; }
+.pill { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+.pill-ok { background: #dcfce7; color: #15803d; }
+.pill-warn { background: #fef3c7; color: #b45309; }
+.pill-bad { background: #fee2e2; color: #b91c1c; }
+.empty { text-align: center; color: #94a3b8; padding: 40px; }
+
+/* ── GRID DE CELDAS ── */
+.celdas-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 16px; }
+.celda-box {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 16px;
+  text-align: center;
+  transition: all 0.2s;
+}
+.celda-num { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+.celda-tipo { font-size: 20px; margin-bottom: 12px; }
+.is-ocupada { background: #fef2f2; border-color: #fca5a5; }
+.is-mantenimiento { background: #fffbeb; border-color: #fcd34d; }
+.celda-placa { background: #ffffff; padding: 6px; border-radius: 8px; font-weight: 800; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.btn-mini { background: #ffffff; border: 1px solid #cbd5e1; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.2s; }
+.btn-mini:hover { background: #0f172a; color: #fff; }
+
+/* ── MODAL ── */
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 9999; }
+.modal-card { background: #ffffff; padding: 40px; border-radius: 24px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3); animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+.modal-icon { font-size: 50px; margin-bottom: 15px; }
+.modal-card h3 { font-size: 24px; font-weight: 800; margin: 0 0 10px 0; }
+.modal-card p { color: #475569; margin-bottom: 25px; line-height: 1.5; }
+
+/* ══════════════════════════════════════════════
+   ANIMACIONES (Las que pediste + Optimización)
+   ══════════════════════════════════════════════ */
+
+/* Efecto escalonado para los paneles y tablas */
+.glass-card, .table-card, .kpi-card {
+  animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0; /* Empiezan invisibles */
+}
+
+/* Retrasos para que parezca que caen una por una */
+.kpi-card:nth-child(1) { animation-delay: 0.1s; }
+.kpi-card:nth-child(2) { animation-delay: 0.15s; }
+.kpi-card:nth-child(3) { animation-delay: 0.2s; }
+
+.glass-card:nth-child(1) { animation-delay: 0.3s; }
+.glass-card:nth-child(2) { animation-delay: 0.4s; }
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Animación al cambiar de pestaña */
+@keyframes fadeSlide {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.section-grid, .table-card, .celdas-grid {
+  animation: fadeSlide 0.4s ease-out forwards;
+}
