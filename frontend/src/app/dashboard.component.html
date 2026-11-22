@@ -68,6 +68,7 @@
       <span class="tab-icon">💳</span> Pagos
     </button>
     
+    <!-- Pestaña Celdas SOLO PARA ADMINISTRADOR -->
     @if (rolUsuario === 'Administrador') {
       <button class="tab" [class.active]="pestana === 'celdas'" (click)="cambiarPestana('celdas')">
         <span class="tab-icon">🅿️</span> Celdas
@@ -142,7 +143,7 @@
   </div>
 }
 
-<!-- ═══════════════ CONTENIDO: HISTORIAL (Agregado de nuevo) ═══════════════ -->
+<!-- ═══════════════ CONTENIDO: HISTORIAL ═══════════════ -->
 @if (pestana === 'historial') {
   <div class="card table-card">
     <div class="card-header">
@@ -197,7 +198,7 @@
   </div>
 }
 
-<!-- ═══════════════ CONTENIDO: PAGOS (Modificado con Selector) ═══════════════ -->
+<!-- ═══════════════ CONTENIDO: PAGOS ═══════════════ -->
 @if (pestana === 'pagos') {
   <div class="card glass-card" style="max-width: 800px; margin: 0 auto;">
     <div class="card-header text-center">
@@ -208,15 +209,12 @@
     
     <div class="section-grid" style="margin-top: 20px; grid-template-columns: 1fr;">
       
-      <!-- Menú desplegable para elegir al cliente por su mensualidad -->
       <div class="form-group">
         <label>Seleccionar Cliente / Mensualidad</label>
         <select [(ngModel)]="nuevoPago.mensualidad_id" class="form-control">
           <option [ngValue]="null">Seleccione al cliente...</option>
           @for (m of mensualidades; track m.id) {
-            @if (m.estado === 'Vigente') {
-              <option [ngValue]="m.id">{{ m.nombre_usuario }} - Placa: {{ m.placa }} (Valor: ${{m.valor_mensual}})</option>
-            }
+            <option [ngValue]="m.id">{{ m.nombre_usuario }} - Placa: {{ m.placa }} (Valor: ${{m.valor_mensual}})</option>
           }
         </select>
       </div>
@@ -231,11 +229,19 @@
       
       <div class="form-group">
         <label>Banco</label>
-        <input type="text" [(ngModel)]="nuevoPago.banco" class="form-control" value="Bancolombia" readonly style="background: #f1f5f9; cursor: not-allowed;">
+        <!-- Si el método es Efectivo, el select se desactiva automáticamente -->
+        <select [(ngModel)]="nuevoPago.banco" class="form-control" [disabled]="nuevoPago.metodo_pago === 'Efectivo'">
+          <option value="Bancolombia">Bancolombia</option>
+          <option value="Nequi">Nequi</option>
+          <option value="Davivienda">Davivienda</option>
+          <option value="No aplica">Ninguno / No aplica</option>
+        </select>
       </div>
     </div>
     
-    <button (click)="registrarPago()" class="btn-submit btn-dark" style="margin-top: 10px;">Procesar Pago 💳</button>
+    <button (click)="registrarPago()" class="btn-submit btn-dark" style="margin-top: 10px;" [disabled]="procesandoPago">
+      {{ procesandoPago ? 'Procesando Pago... ⏳' : 'Procesar Pago 💳' }}
+    </button>
   </div>
 }
 
@@ -344,7 +350,7 @@
     <div class="modal-card">
       <div class="modal-icon">{{ esError ? '❌' : '✅' }}</div>
       <h3>{{ esError ? 'Operación Rechazada' : '¡Operación Exitosa!' }}</h3>
-      <p>{{ mensajeModal }}</p>
+      <p style="white-space: pre-line;">{{ mensajeModal }}</p>
       <button (click)="cerrarModal()" class="btn-submit" [ngClass]="esError ? 'btn-red' : 'btn-dark'">Entendido</button>
     </div>
   </div>

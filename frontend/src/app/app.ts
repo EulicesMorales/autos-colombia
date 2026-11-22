@@ -8,6 +8,6 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class AppComponent {
+export class AppComponent { // <-- ¡ESTE ES EL NOMBRE QUE FALLA!
   title = 'autos-colombia';
 }
